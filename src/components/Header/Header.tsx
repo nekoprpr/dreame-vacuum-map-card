@@ -7,33 +7,23 @@ interface HeaderProps {
 }
 
 export function Header({ entity, deviceName }: HeaderProps) {
-  const getStatusText = (state: string) => {
-    const statusMap: Record<string, string> = {
-      cleaning: 'Cleaning',
-      returning: 'Returning to dock',
-      docked: 'Docked',
-      idle: 'Idle',
-      paused: 'Paused',
-      error: 'Error',
-      drying: 'Drying',
-    };
-    return statusMap[state] || state;
+  const getStatusText = () => {
+    // Use the status attribute which has more detailed state info
+    return entity.attributes.status || entity.state;
   };
 
-  const getCleanedArea = () => entity.attributes.cleaned_area || '--';
-  const getCleaningTime = () => {
-    const time = entity.attributes.cleaning_time;
-    return time ? Math.round(time / 60) : '--';
-  };
-  const getBatteryLevel = () => entity.attributes.battery_level || '--';
+  const getCleanedArea = () => entity.attributes.cleaned_area || 0;
+  const getCleaningTime = () => entity.attributes.cleaning_time || 0;
+  const getBatteryLevel = () => entity.attributes.battery || 0;
 
-  const isDrying = entity.state === 'drying';
+  // Check if vacuum is drying based on vacuum_state or drying attribute
+  const isDrying = entity.attributes.vacuum_state === 'drying' || entity.attributes.drying === true;
   const dryingProgress = entity.attributes.drying_progress || 0;
 
   return (
     <div className="header">
       <h2 className="header__title">{deviceName}</h2>
-      <p className="header__status">{getStatusText(entity.state)}</p>
+      <p className="header__status">{getStatusText()}</p>
 
       {isDrying && (
         <div className="header__progress">

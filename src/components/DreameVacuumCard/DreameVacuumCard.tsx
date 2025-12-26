@@ -5,7 +5,7 @@ import { VacuumMap } from '../VacuumMap';
 import { ModeTabs } from '../ModeTabs';
 import { ActionButtons } from '../ActionButtons';
 import { CleaningModeModal } from '../CleaningModeModal';
-import type { Hass, HassConfig, CleaningMode, CleaningStrategy, RoomPosition } from '../../types/homeassistant';
+import type { Hass, HassConfig, CleaningMode, RoomPosition } from '../../types/homeassistant';
 import './DreameVacuumCard.scss';
 
 interface DreameVacuumCardProps {
@@ -28,7 +28,6 @@ const ROOM_POSITIONS: Record<number, { x: number; y: number }> = {
 export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
   const [selectedMode, setSelectedMode] = useState<CleaningMode>('all');
   const [selectedRooms, setSelectedRooms] = useState<Map<number, string>>(new Map());
-  const [cleaningMode, setCleaningMode] = useState<CleaningStrategy>('CleanGenius');
   const [modalOpened, setModalOpened] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -125,7 +124,11 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
           onRoomToggle={handleRoomToggle}
         />
 
-        <CleaningModeButton cleaningMode={cleaningMode} onClick={() => setModalOpened(true)} />
+        <CleaningModeButton 
+          cleaningMode={entity.attributes.cleangenius_mode || entity.attributes.cleaning_mode || 'Sweeping and mopping'} 
+          cleangenius={entity.attributes.cleangenius || 'Off'}
+          onClick={() => setModalOpened(true)} 
+        />
 
         <div className="dreame-vacuum-card__controls">
           {selectedRooms.size > 0 && (
@@ -146,8 +149,8 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
       <CleaningModeModal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        cleaningMode={cleaningMode}
-        onModeChange={setCleaningMode}
+        entity={entity}
+        hass={hass}
       />
 
       {toast && (

@@ -1,26 +1,120 @@
+import { useState } from 'react';
 import { Modal, SegmentedControl, Toggle, CircularButton } from '../common';
-import type { CleaningStrategy } from '../../types/homeassistant';
+import type { Hass, HassEntity } from '../../types/homeassistant';
 import './CleaningModeModal.scss';
 
 interface CleaningModeModalProps {
   opened: boolean;
   onClose: () => void;
-  cleaningMode: CleaningStrategy;
-  onModeChange: (mode: CleaningStrategy) => void;
+  entity: HassEntity;
+  hass: Hass;
 }
 
 export function CleaningModeModal({
   opened,
   onClose,
-  cleaningMode,
-  onModeChange,
+  entity,
+  hass,
 }: CleaningModeModalProps) {
-  const isCleanGenius = cleaningMode === 'CleanGenius';
+  // Get cleangenius mode from entity
+  const cleangenius = entity.attributes.cleangenius || 'Off';
+  const [isCleanGenius, setIsCleanGenius] = useState(cleangenius !== 'Off');
+  
+  // Get actual values from entity
+  const cleaningMode = entity.attributes.cleaning_mode || 'Sweeping and mopping';
+  const cleangeniusMode = entity.attributes.cleangenius_mode || 'Vacuum and mop';
+  const suctionLevel = entity.attributes.suction_level || 'Standard';
+  const wetnessLevel = entity.attributes.wetness_level || 20;
+  const cleaningRoute = entity.attributes.cleaning_route || 'Standard';
+  const tightMopping = entity.attributes.tight_mopping || false;
+  const maxSuctionPower = entity.attributes.max_suction_power || false;
+  const selfCleanArea = entity.attributes.self_clean_area || 20;
+  const mopPadHumidity = entity.attributes.mop_pad_humidity || 'Moist';
 
   const modeOptions = [
     { value: 'CleanGenius', label: 'CleanGenius' },
     { value: 'Custom', label: 'Custom' },
   ];
+
+  // Get available options from entity
+  const cleaningModeList: string[] = entity.attributes.cleaning_mode_list || [
+    'Sweeping',
+    'Mopping',
+    'Sweeping and mopping',
+    'Mopping after sweeping',
+  ];
+  
+  const cleangeniusModeList: string[] = entity.attributes.cleangenius_mode_list || [
+    'Vacuum and mop',
+    'Mop after vacuum',
+  ];
+  
+  const suctionLevelList: string[] = entity.attributes.suction_level_list || ['Quiet', 'Standard', 'Strong', 'Turbo'];
+  const cleaningRouteList: string[] = entity.attributes.cleaning_route_list || ['Quick', 'Standard', 'Intensive', 'Deep'];
+
+  // Map cleaning modes to icons
+  const getModeIcon = (mode: string): string => {
+    if (mode.includes('Sweep') && mode.includes('Mop')) return '🔄';
+    if (mode.includes('after')) return '➜';
+    if (mode.includes('Mop')) return '💧';
+    if (mode.includes('Sweep') || mode.includes('Vacuum')) return '🌀';
+    return '⚙️';
+  };
+
+  // Map suction levels to icons
+  const getSuctionIcon = (level: string): string => {
+    if (level.includes('Quiet') || level.includes('Silent')) return '🌙';
+    if (level.includes('Turbo')) return '⚡';
+    if (level.includes('Strong')) return '🌀';
+    return '🔄';
+  };
+
+  // Map routes to icons
+  const getRouteIcon = (route: string): string => {
+    if (route === 'Quick') return '⌇';
+    if (route === 'Standard') return '≡';
+    if (route === 'Intensive') return '⋮⋮';
+    if (route === 'Deep') return '⫴';
+    return '≡';
+  };
+
+  // Service call helpers
+  const setSelectOption = (selectEntity: string, option: string) => {
+    hass.callService('select', 'select_option', {
+      entity_id: selectEntity,
+      option: option,
+    });
+  };
+
+  // Convert display value to service value for cleangenius mode
+  const convertToServiceValue = (mode: string): string => {
+    if (mode === 'Vacuum and mop') return 'vacuum_and_mop';
+    if (mode === 'Mop after vacuum') return 'mop_after_vacuum';
+    return mode;
+  };
+
+  const setSwitch = (switchEntity: string, turnOn: boolean) => {
+    hass.callService('switch', turnOn ? 'turn_on' : 'turn_off', {
+      entity_id: switchEntity,
+    });
+  };
+
+  const setNumber = (numberEntity: string, value: number) => {
+    hass.callService('number', 'set_value', {
+      entity_id: numberEntity,
+      value: value,
+    });
+  };
+
+  // Get entity IDs based on the vacuum entity
+  const baseEntityId = entity.entity_id.replace('vacuum.', '');
+  const cleaningModeEntity = `select.${baseEntityId}_cleaning_mode`;
+  const cleangeniusModeEntity = `select.${baseEntityId}_cleangenius_mode`;
+  const suctionLevelEntity = `select.${baseEntityId}_suction_level`;
+  const cleaningRouteEntity = `select.${baseEntityId}_cleaning_route`;
+  const maxSuctionEntity = `switch.${baseEntityId}_max_suction_power`;
+  const tightMoppingEntity = `switch.${baseEntityId}_tight_mopping`;
+  const wetnessLevelEntity = `number.${baseEntityId}_wetness_level`;
 
   return (
     <Modal opened={opened} onClose={onClose}>
@@ -28,48 +122,55 @@ export function CleaningModeModal({
         {/* Mode Toggle */}
         <div className="cleaning-mode-modal__header">
           <SegmentedControl
-            value={cleaningMode}
-            onChange={(value) => onModeChange(value as CleaningStrategy)}
+            value={isCleanGenius ? 'CleanGenius' : 'Custom'}
+            onChange={(value) => setIsCleanGenius(value === 'CleanGenius')}
             options={modeOptions}
           />
         </div>
 
         {isCleanGenius ? (
           <div className="cleaning-mode-modal__content">
-            {/* Free your hands section - CleanGenius only */}
-            <section className="cleaning-mode-modal__section">
-              <h3 className="cleaning-mode-modal__section-title">Free your hands</h3>
-              <div className="cleaning-mode-modal__room-map">
-                <span className="cleaning-mode-modal__placeholder">Room map visualization</span>
-              </div>
-            </section>
-
             {/* Cleaning Mode */}
             <section className="cleaning-mode-modal__section">
               <h3 className="cleaning-mode-modal__section-title">Cleaning Mode</h3>
               <div className="cleaning-mode-modal__mode-grid">
-                <div className="cleaning-mode-modal__mode-card cleaning-mode-modal__mode-card--selected">
-                  <div className="cleaning-mode-modal__mode-icon cleaning-mode-modal__mode-icon--vac-mop">
-                    <span>💧</span>
-                  </div>
-                  <span className="cleaning-mode-modal__mode-label">Vac & Mop</span>
-                  <div className="cleaning-mode-modal__mode-checkmark">
-                    <span>✓</span>
-                  </div>
-                </div>
-                <div className="cleaning-mode-modal__mode-card">
-                  <div className="cleaning-mode-modal__mode-icon cleaning-mode-modal__mode-icon--mop-after">
-                    <span>➜</span>
-                  </div>
-                  <span className="cleaning-mode-modal__mode-label">Mop after Vac</span>
-                </div>
+                {/* Use cleangenius_mode_list from entity */}
+                {cleangeniusModeList.map((mode, idx) => {
+                  const isVacMop = mode === 'Vacuum and mop';
+                  const isMopAfter = mode === 'Mop after vacuum';
+                  return (
+                    <div
+                      key={idx}
+                      className={`cleaning-mode-modal__mode-card ${
+                        mode === cleangeniusMode ? 'cleaning-mode-modal__mode-card--selected' : ''
+                      }`}
+                      onClick={() => setSelectOption(cleangeniusModeEntity, convertToServiceValue(mode))}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className={`cleaning-mode-modal__mode-icon cleaning-mode-modal__mode-icon--${isVacMop ? 'vac-mop' : 'mop-after'}`}>
+                        <span>{isVacMop ? '🔄' : '➜'}</span>
+                      </div>
+                      <span className="cleaning-mode-modal__mode-label">
+                        {isVacMop ? 'Vac & Mop' : isMopAfter ? 'Mop after Vac' : mode}
+                      </span>
+                      {mode === cleangeniusMode && (
+                        <div className="cleaning-mode-modal__mode-checkmark">
+                          <span>✓</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </section>
 
             {/* Deep Cleaning */}
             <div className="cleaning-mode-modal__setting">
               <span className="cleaning-mode-modal__setting-label">Deep Cleaning</span>
-              <Toggle checked={false} onChange={() => {}} />
+              <Toggle 
+                checked={tightMopping} 
+                onChange={(checked) => setSwitch(tightMoppingEntity, checked)} 
+              />
             </div>
           </div>
         ) : (
@@ -78,21 +179,15 @@ export function CleaningModeModal({
             <section className="cleaning-mode-modal__section">
               <h3 className="cleaning-mode-modal__section-title">Cleaning Mode</h3>
               <div className="cleaning-mode-modal__horizontal-scroll">
-                {[
-                  { icon: '🌀', label: 'Vacuum' },
-                  { icon: '💧', label: 'Mop' },
-                  { icon: '🔄', label: 'Vac & Mop', selected: true },
-                  { icon: '➜', label: 'Mop after Vac' },
-                  { icon: '⚙️', label: 'Custom...' },
-                ].map((mode, idx) => (
+                {cleaningModeList.map((mode, idx) => (
                   <div key={idx} className="cleaning-mode-modal__mode-option">
                     <CircularButton
-                      size="large"
-                      selected={mode.selected}
-                      onClick={() => {}}
-                      icon={mode.icon}
+                      size="small"
+                      selected={mode === cleaningMode}
+                      onClick={() => setSelectOption(cleaningModeEntity, mode)}
+                      icon={getModeIcon(mode)}
                     />
-                    <span className="cleaning-mode-modal__mode-option-label">{mode.label}</span>
+                    <span className="cleaning-mode-modal__mode-option-label">{mode}</span>
                   </div>
                 ))}
               </div>
@@ -102,20 +197,15 @@ export function CleaningModeModal({
             <section className="cleaning-mode-modal__section">
               <h3 className="cleaning-mode-modal__section-title">Suction Power</h3>
               <div className="cleaning-mode-modal__power-grid">
-                {[
-                  { icon: '🌙', label: 'Quiet' },
-                  { icon: '🔄', label: 'Standard' },
-                  { icon: '🌀', label: 'Turbo', selected: true },
-                  { icon: '⚡', label: 'Max' },
-                ].map((power, idx) => (
+                {suctionLevelList.map((level, idx) => (
                   <div key={idx} className="cleaning-mode-modal__power-option">
                     <CircularButton
-                      size="large"
-                      selected={power.selected}
-                      onClick={() => {}}
-                      icon={power.icon}
+                      size="small"
+                      selected={level === suctionLevel}
+                      onClick={() => setSelectOption(suctionLevelEntity, level)}
+                      icon={getSuctionIcon(level)}
                     />
-                    <span className="cleaning-mode-modal__power-label">{power.label}</span>
+                    <span className="cleaning-mode-modal__power-label">{level}</span>
                   </div>
                 ))}
               </div>
@@ -124,7 +214,10 @@ export function CleaningModeModal({
               <div className="cleaning-mode-modal__max-plus">
                 <div className="cleaning-mode-modal__max-plus-header">
                   <span className="cleaning-mode-modal__max-plus-title">Max+</span>
-                  <Toggle checked={false} onChange={() => {}} />
+                  <Toggle 
+                    checked={maxSuctionPower} 
+                    onChange={(checked) => setSwitch(maxSuctionEntity, checked)} 
+                  />
                 </div>
                 <p className="cleaning-mode-modal__max-plus-description">
                   The suction power will be increased to the highest level, which is a single-use mode.
@@ -142,21 +235,28 @@ export function CleaningModeModal({
                   type="range"
                   min="0"
                   max="30"
-                  defaultValue="20"
+                  value={wetnessLevel}
+                  onChange={(e) => setNumber(wetnessLevelEntity, parseInt(e.target.value))}
                   className="cleaning-mode-modal__slider"
                 />
-                <div className="cleaning-mode-modal__slider-value">20</div>
+                <div className="cleaning-mode-modal__slider-value">{wetnessLevel}</div>
               </div>
 
               {/* Labels */}
               <div className="cleaning-mode-modal__slider-labels">
-                <span className="cleaning-mode-modal__slider-label cleaning-mode-modal__slider-label--inactive">
+                <span className={`cleaning-mode-modal__slider-label ${
+                  mopPadHumidity === 'Slightly dry' ? 'cleaning-mode-modal__slider-label--active' : 'cleaning-mode-modal__slider-label--inactive'
+                }`}>
                   Slightly dry
                 </span>
-                <span className="cleaning-mode-modal__slider-label cleaning-mode-modal__slider-label--active">
+                <span className={`cleaning-mode-modal__slider-label ${
+                  mopPadHumidity === 'Moist' ? 'cleaning-mode-modal__slider-label--active' : 'cleaning-mode-modal__slider-label--inactive'
+                }`}>
                   Moist
                 </span>
-                <span className="cleaning-mode-modal__slider-label cleaning-mode-modal__slider-label--inactive">
+                <span className={`cleaning-mode-modal__slider-label ${
+                  mopPadHumidity === 'Wet' ? 'cleaning-mode-modal__slider-label--active' : 'cleaning-mode-modal__slider-label--inactive'
+                }`}>
                   Wet
                 </span>
               </div>
@@ -166,7 +266,7 @@ export function CleaningModeModal({
             <div className="cleaning-mode-modal__setting cleaning-mode-modal__setting--clickable">
               <span className="cleaning-mode-modal__setting-label">Mop-washing frequency</span>
               <div className="cleaning-mode-modal__setting-value">
-                <span>By Area 20m²</span>
+                <span>By Area {selfCleanArea}m²</span>
                 <span className="cleaning-mode-modal__setting-arrow">›</span>
               </div>
             </div>
@@ -179,20 +279,15 @@ export function CleaningModeModal({
               </div>
 
               <div className="cleaning-mode-modal__route-grid">
-                {[
-                  { icon: '⌇', label: 'Quick' },
-                  { icon: '≡', label: 'Standard', selected: true },
-                  { icon: '⋮⋮', label: 'Intensive' },
-                  { icon: '⫴', label: 'Deep' },
-                ].map((route, idx) => (
+                {cleaningRouteList.map((route, idx) => (
                   <div key={idx} className="cleaning-mode-modal__route-option">
                     <CircularButton
-                      size="large"
-                      selected={route.selected}
-                      onClick={() => {}}
-                      icon={route.icon}
+                      size="small"
+                      selected={route === cleaningRoute}
+                      onClick={() => setSelectOption(cleaningRouteEntity, route)}
+                      icon={getRouteIcon(route)}
                     />
-                    <span className="cleaning-mode-modal__route-label">{route.label}</span>
+                    <span className="cleaning-mode-modal__route-label">{route}</span>
                   </div>
                 ))}
               </div>
