@@ -4,9 +4,10 @@ interface CleaningModeButtonProps {
   cleaningMode: string;
   cleangenius: string;
   onClick: () => void;
+  onShortcutsClick?: () => void;
 }
 
-export function CleaningModeButton({ cleaningMode, cleangenius, onClick }: CleaningModeButtonProps) {
+export function CleaningModeButton({ cleaningMode, cleangenius, onClick, onShortcutsClick }: CleaningModeButtonProps) {
   // Map cleaning mode to icon
   const getIcon = (mode: string): string => {
     if (mode.includes('Sweep') && mode.includes('Mop')) return '🔄';
@@ -34,15 +35,31 @@ export function CleaningModeButton({ cleaningMode, cleangenius, onClick }: Clean
     return cleangenius === 'Off' ? 'Custom: ' : 'CleanGenius: ';
   };
 
+  const handleShortcutsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onShortcutsClick?.();
+  };
+
   return (
-    <button onClick={onClick} className="cleaning-mode-button">
-      <div className="cleaning-mode-button__content">
-        <span className="cleaning-mode-button__icon">{getIcon(cleaningMode)}</span>
-        <span className="cleaning-mode-button__text">
-          {getPrefix()}{getFriendlyName(cleaningMode)}
-        </span>
-      </div>
-      <span className="cleaning-mode-button__arrow">›</span>
-    </button>
+    <div className="cleaning-mode-button-wrapper">
+      <button onClick={onClick} className="cleaning-mode-button">
+        <div className="cleaning-mode-button__content">
+          <span className="cleaning-mode-button__icon">{getIcon(cleaningMode)}</span>
+          <span className="cleaning-mode-button__text">
+            {getPrefix()}{getFriendlyName(cleaningMode)}
+          </span>
+        </div>
+        <span className="cleaning-mode-button__arrow">›</span>
+      </button>
+      {cleangenius !== 'Off' && onShortcutsClick && (
+        <button
+          className="cleaning-mode-button-wrapper__shortcuts"
+          onClick={handleShortcutsClick}
+          title="View shortcuts"
+        >
+          ⚡
+        </button>
+      )}
+    </div>
   );
 }

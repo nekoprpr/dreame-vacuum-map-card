@@ -5,6 +5,7 @@ import { VacuumMap } from '../VacuumMap';
 import { ModeTabs } from '../ModeTabs';
 import { ActionButtons } from '../ActionButtons';
 import { CleaningModeModal } from '../CleaningModeModal';
+import { ShortcutsModal } from '../ShortcutsModal';
 import type { Hass, HassConfig, CleaningMode, RoomPosition } from '../../types/homeassistant';
 import './DreameVacuumCard.scss';
 
@@ -29,6 +30,7 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
   const [selectedMode, setSelectedMode] = useState<CleaningMode>('all');
   const [selectedRooms, setSelectedRooms] = useState<Map<number, string>>(new Map());
   const [modalOpened, setModalOpened] = useState(false);
+  const [shortcutsModalOpened, setShortcutsModalOpened] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   const entity = hass.states[config.entity];
@@ -128,6 +130,7 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
           cleaningMode={entity.attributes.cleangenius_mode || entity.attributes.cleaning_mode || 'Sweeping and mopping'} 
           cleangenius={entity.attributes.cleangenius || 'Off'}
           onClick={() => setModalOpened(true)} 
+          onShortcutsClick={() => setShortcutsModalOpened(true)}
         />
 
         <div className="dreame-vacuum-card__controls">
@@ -149,6 +152,13 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
       <CleaningModeModal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
+        entity={entity}
+        hass={hass}
+      />
+
+      <ShortcutsModal
+        opened={shortcutsModalOpened}
+        onClose={() => setShortcutsModalOpened(false)}
         entity={entity}
         hass={hass}
       />
