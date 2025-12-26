@@ -33,8 +33,6 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
 
   const entity = hass.states[config.entity];
 
-  console.log('DreameVacuumCard render', { entity, config });
-
   const deviceName = entity?.attributes?.friendly_name || config.title || 'Dreame Vacuum';
   const mapEntityId = config.map_entity || `camera.${config.entity.split('.')[1]}_map`;
 
