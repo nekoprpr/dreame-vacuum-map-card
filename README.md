@@ -1,73 +1,104 @@
-# React + TypeScript + Vite
+# Dreame Vacuum Map Card
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, beautiful Home Assistant Lovelace card for controlling Dreame robot vacuums. Built with React, TypeScript, and SCSS.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Interactive Map Display
+- Real-time vacuum map visualization
+- Room selection for targeted cleaning
+- Support for multiple cleaning modes (Full house, Room, Zone, Spot)
 
-## React Compiler
+### Advanced Cleaning Controls
+- **CleanGenius Mode**: AI-powered cleaning with automatic settings
+  - Vacuum & Mop / Mop after Vacuum options
+  - Deep Cleaning toggle for intensive cleaning
+  
+- **Custom Mode**: Full manual control
+  - 4 cleaning modes (Sweeping, Mopping, Sweeping & Mopping, Mopping after Sweeping)
+  - 4 suction levels (Quiet, Standard, Strong, Turbo) with Max+ boost
+  - Dynamic wetness control with real-time slider
+  - Mop-washing frequency settings (By area, By time, By room)
+  - Cleaning route selection (Quick, Standard, Intensive, Deep)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Smart UI Features
+- Mode-aware controls (e.g., wetness slider only shows when mopping)
+- Dynamic sliders with visual feedback
+- Beautiful BEM/SCSS architecture
+- Shadow DOM for proper CSS isolation
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 1. Download the card
+Download `dreame-vacuum-map-card.js` from the releases page
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2. Add to Home Assistant
+Copy the file to your Home Assistant config directory:
+```
+/config/www/dreame-vacuum-map-card/dreame-vacuum-map-card.js
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Add resource to Lovelace
+Go to Settings → Dashboards → Resources → Add Resource:
+- URL: `/local/dreame-vacuum-map-card/dreame-vacuum-map-card.js`
+- Resource type: JavaScript Module
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 4. Add card to dashboard
+```yaml
+type: custom:dreame-vacuum-map-card
+entity: vacuum.your_vacuum
+map_entity: camera.your_vacuum_map
 ```
+
+## Development
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Setup
+```bash
+npm install
+```
+
+### Development Mode
+```bash
+npm run dev
+```
+
+### Build for Production
+```bash
+npm run build
+```
+
+The built file will be in `dist/dreame-vacuum-map-card.js`
+
+### Deploy to Home Assistant
+```bash
+npm run deploy
+```
+
+## Tech Stack
+
+- **React 19.2.0** - Modern UI library
+- **TypeScript 5.9.3** - Type safety
+- **Vite 7.2.4** - Fast build tool
+- **SASS** - Powerful CSS preprocessor
+
+## Project Structure
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed information about the project structure and BEM methodology.
+
+## Requirements
+
+- Home Assistant with the [Dreame Vacuum](https://github.com/Tasshack/dreame-vacuum) integration installed
+- A supported Dreame robot vacuum
+
+## Credits
+
+- Original inspiration from [xiaomi-vacuum-map-card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
+- [Dreame Vacuum](https://github.com/Tasshack/dreame-vacuum) integration by Tasshack
+
+## License
+
+MIT
