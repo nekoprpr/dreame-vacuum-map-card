@@ -6,15 +6,30 @@ A modern, beautiful Home Assistant Lovelace card for controlling Dreame robot va
 
 (Almost) complete feature pairity with the original Dreame application
 
-![Main Screen](screenshots/image.png)
+<div style="display: flex; gap: 10px;">
+    <img src="screenshots/light-main.png" alt="Main Screen Light" style="width: 33%;">
+    <img src="screenshots/dark-main.png" alt="Main Screen Dark" style="width: 33%;">
+</div>
 
-![Room Cleaning](screenshots/image2.png)
+<div style="display: flex; gap: 10px;">
+    <img src="screenshots/light-genius.png" alt="CleanGenius Light" style="width: 33%;">
+    <img src="screenshots/dark-genius.png" alt="CleanGenius Dark" style="width: 33%;">
+</div>
 
-![Custom Cleaning mode](screenshots/image3.png)
+<div style="display: flex; gap: 10px;">
+    <img src="screenshots/light-custom.png" alt="Custom Cleaning Light" style="width: 33%;">
+    <img src="screenshots/dark-custom.png" alt="Custom Cleaning Dark" style="width: 33%;">
+</div>
 
-![Clean Genius mode](screenshots/image4.png)
+<div style="display: flex; gap: 10px;">
+    <img src="screenshots/room-cleaning.png" alt="Room Cleaning Light" style="width: 33%;">
+    <img src="screenshots/dark-room-cleaning.png" alt="Room Cleaning Dark" style="width: 33%;">
+</div>
 
-![Zone Cleaning mode](screenshots/image5.png)
+<div style="display: flex; gap: 10px;">
+    <img src="screenshots/zone-cleaning.png" alt="Zone Cleaning Light" style="width: 33%;">
+    <img src="screenshots/dark-zone-cleaning.png" alt="Zone Cleaning Dark" style="width: 33%;">
+</div>
 
 ## Installation
 
