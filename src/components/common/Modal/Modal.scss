@@ -12,6 +12,10 @@
   overflow-y: auto;
   color: var(--text-primary, black);
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   &__backdrop {
     position: absolute;
     top: 0;

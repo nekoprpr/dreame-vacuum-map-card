@@ -96,37 +96,39 @@ export function CleaningModeModal({
           />
         </div>
 
-        {isCleanGenius ? (
-          <CleanGeniusMode
-            cleangeniusMode={cleangeniusMode}
-            cleangeniusModeList={cleangeniusModeList}
-            cleangenius={cleangenius}
-            baseEntityId={baseEntityId}
-            hass={hass}
-          />
-        ) : (
-          <CustomMode
-            cleaningMode={cleaningMode}
-            cleaningModeList={cleaningModeList}
-            suctionLevel={suctionLevel}
-            suctionLevelList={suctionLevelList}
-            wetnessLevel={wetnessLevel}
-            mopPadHumidity={mopPadHumidity}
-            cleaningRoute={cleaningRoute}
-            cleaningRouteList={cleaningRouteList}
-            maxSuctionPower={maxSuctionPower}
-            selfCleanArea={selfCleanArea}
-            selfCleanFrequency={selfCleanFrequency}
-            selfCleanFrequencyList={selfCleanFrequencyList}
-            selfCleanAreaMin={selfCleanAreaMin}
-            selfCleanAreaMax={selfCleanAreaMax}
-            selfCleanTime={selfCleanTime}
-            selfCleanTimeMin={selfCleanTimeMin}
-            selfCleanTimeMax={selfCleanTimeMax}
-            baseEntityId={baseEntityId}
-            hass={hass}
-          />
-        )}
+        <div className="cleaning-mode-modal__content">
+          {isCleanGenius ? (
+            <CleanGeniusMode
+              cleangeniusMode={cleangeniusMode}
+              cleangeniusModeList={cleangeniusModeList}
+              cleangenius={cleangenius}
+              baseEntityId={baseEntityId}
+              hass={hass}
+            />
+          ) : (
+            <CustomMode
+              cleaningMode={cleaningMode}
+              cleaningModeList={cleaningModeList}
+              suctionLevel={suctionLevel}
+              suctionLevelList={suctionLevelList}
+              wetnessLevel={wetnessLevel}
+              mopPadHumidity={mopPadHumidity}
+              cleaningRoute={cleaningRoute}
+              cleaningRouteList={cleaningRouteList}
+              maxSuctionPower={maxSuctionPower}
+              selfCleanArea={selfCleanArea}
+              selfCleanFrequency={selfCleanFrequency}
+              selfCleanFrequencyList={selfCleanFrequencyList}
+              selfCleanAreaMin={selfCleanAreaMin}
+              selfCleanAreaMax={selfCleanAreaMax}
+              selfCleanTime={selfCleanTime}
+              selfCleanTimeMin={selfCleanTimeMin}
+              selfCleanTimeMax={selfCleanTimeMax}
+              baseEntityId={baseEntityId}
+              hass={hass}
+            />
+          )}
+        </div>
       </div>
     </Modal>
   );

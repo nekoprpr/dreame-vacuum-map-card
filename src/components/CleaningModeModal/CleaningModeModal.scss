@@ -3,6 +3,17 @@
     margin-bottom: 24px;
   }
 
+  &__content {
+    max-height: 45vh;
+    overflow-y: auto;
+    width: 100%;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   &__section {
     margin-bottom: 24px;
   }
