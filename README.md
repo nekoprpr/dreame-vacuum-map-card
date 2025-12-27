@@ -90,10 +90,10 @@ The built file will be in `dist/dreame-vacuum-map-card.js`
 
 ## Tech Stack
 
-- **React 19.2.0** - Modern UI library
-- **TypeScript 5.9.3** - Type safety
-- **Vite 7.2.4** - Fast build tool
-- **SASS** - Powerful CSS preprocessor
+- **React 19.2.0** 
+- **TypeScript 5.9.3**
+- **Vite 7.2.4**
+- **SASS**
 
 ## Requirements
 
