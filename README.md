@@ -35,8 +35,9 @@ Go to Settings → Dashboards → Resources → Add Resource:
 ### 4. Add card to dashboard
 ```yaml
 type: custom:dreame-vacuum-map-card
-entity: vacuum.dima
+entity: vacuum.dreame_vacuum_entity
 title: Dreame Vacuum
+map_entity: camera.dreame_vacuum_entity # Optional, defaults to camera.${ENTITY_NAME}_map 
 ```
 
 ## Development
