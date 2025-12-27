@@ -115,6 +115,7 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
 
   const handleStop = () => {
     hass.callService('vacuum', 'stop', { entity_id: config.entity });
+    hass.callService('vacuum', 'return_to_base', { entity_id: config.entity });
     showToast('Stopping vacuum');
   };
 
