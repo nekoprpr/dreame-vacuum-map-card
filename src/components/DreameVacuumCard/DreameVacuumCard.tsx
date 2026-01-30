@@ -149,9 +149,9 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
           <ActionButtons
             selectedMode={selectedMode}
             selectedRoomsCount={selectedRooms.size}
-            isRunning={entity.attributes.running || entity.attributes.resume_cleaning || false}
+            isRunning={entity.attributes.running || false}
             isPaused={entity.attributes.paused || false}
-            isDocked={entity.attributes.docked || false}
+            isDocked={entity.state === "docked" || entity.attributes.docked || false}
             onClean={handleCleanAction}
             onPause={handlePause}
             onResume={handleResume}
