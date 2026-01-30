@@ -2,21 +2,23 @@ import type { Hass, HassEntity } from '../types/homeassistant';
 import mockData from '../../mock-data.json';
 import { devConfig } from '../config/env';
 
+const data = mockData as any;
+
 export function createMockHass(): Hass {
   // Create a mutable states object that can be updated
   const states: Record<string, HassEntity> = {
-    [mockData.entity_id]: {
-      entity_id: mockData.entity_id,
-      state: mockData.state,
-      attributes: mockData.attributes as any,
-      context: mockData.context,
-      last_changed: mockData.last_changed,
-      last_updated: mockData.last_updated,
+    [data.entity_id]: {
+      entity_id: data.entity_id,
+      state: data.state,
+      attributes: data.attributes as any,
+      context: data.context,
+      last_changed: data.last_changed,
+      last_updated: data.last_updated,
     },
   };
 
   // Add a mock camera entity for the map
-  const mapEntityId = `camera.${mockData.entity_id.split('.')[1]}_map`;
+  const mapEntityId = `camera.${data.entity_id.split('.')[1]}_map`;
   states[mapEntityId] = {
     entity_id: mapEntityId,
     state: 'idle',
@@ -65,7 +67,7 @@ function handleVacuumService(
   serviceData: any,
   states: Record<string, HassEntity>
 ) {
-  const entityId = serviceData?.entity_id || mockData.entity_id;
+  const entityId = serviceData?.entity_id || data.entity_id;
   const entity = states[entityId];
   
   if (!entity) {
