@@ -32,7 +32,7 @@ export function ShortcutsModal({
   }));
   
   const handleShortcutClick = (shortcutId: number) => {
-    hass.callService('dreame_vacuum', 'vacuum_clean_shortcut', {
+    hass.callService('dreame_vacuum', 'vacuum_start_shortcut', {
       entity_id: entity.entity_id,
       shortcut_id: shortcutId,
     });
