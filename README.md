@@ -120,7 +120,7 @@ You can customize any of the following colors:
 - `textPrimary`, `textPrimaryInvert`, `textSecondary`, `textTertiary`
 
 **Accent Colors:**
-- `accentColor`, `accentColorHover`, `accentBg`, `accentBgHover`, `accentBgTransparent`, `accentShadow`, `accentColorShadowColor`
+- `accentColor`, `accentColorHover`, `accentBg`, `accentBgHover`, `accentBgSecondary`, `accentBgSecondaryHover`,  `accentBgTransparent`, `accentShadow`, `accentColorShadowColor`
 
 **State Colors:**
 - `warningColor`, `warningShadow`, `errorColor`, `errorColorHover`, `errorShadow`
