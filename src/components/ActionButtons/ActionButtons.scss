@@ -33,10 +33,10 @@
     }
   }
 
-  &__clean  { color: var(--text-primary-invert); background: var(--accent-color); }
-  &__pause  { color: var(--accent-color); border-color: var(--accent-color-hover); }
-  &__resume { color: #32d74b; border-color: rgba(50, 215, 75, 0.5); }
-  &__stop   { color: #ff453a; border-color: rgba(255, 69, 58, 0.5); }
+  &__clean  { color: var(--text-primary-invert); background: var(--accent-color); background: var(--surface-secondary); }
+  &__pause  { color: var(--accent-color); border-color: var(--accent-color-hover);  background: var(--surface-secondary);}
+  &__resume { color: #32d74b; border-color: rgba(50, 215, 75, 0.5); background: var(--surface-secondary); }
+  &__stop   { color: #ff453a; border-color: rgba(255, 69, 58, 0.5); background: var(--surface-secondary); }
 
   &__dock {
     background: var(--surface-secondary);

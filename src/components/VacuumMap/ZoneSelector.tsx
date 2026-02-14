@@ -5,6 +5,7 @@ interface ZoneSelectorProps {
   zone: Zone | null;
   onZoneChange: (zone: Zone | null) => void;
   clearZoneLabel: string;
+  isStarted?: boolean;
 }
 
 type ResizeHandle = 'tl' | 'tr' | 'bl' | 'br' | null;
@@ -13,6 +14,7 @@ export function ZoneSelector({
   zone,
   onZoneChange,
   clearZoneLabel,
+  isStarted = false,
 }: ZoneSelectorProps) {
   const [resizingHandle, setResizingHandle] = useState<ResizeHandle>(null);
   const [resizeStartZone, setResizeStartZone] = useState<Zone | null>(null);
@@ -77,7 +79,6 @@ export function ZoneSelector({
     setResizeStartZone(null);
   };
 
-  // Expose methods for parent component to use
   const isResizing = () => resizingHandle !== null;
   
   return {
@@ -96,38 +97,41 @@ export function ZoneSelector({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Resize handles */}
-        <div
-          className="vacuum-map__zone-handle vacuum-map__zone-handle--tl"
-          onMouseDown={(e) => handleResizeStart(e, 'tl')}
-          onTouchStart={(e) => handleResizeStart(e, 'tl')}
-          title="Resize"
-        />
-        <div
-          className="vacuum-map__zone-handle vacuum-map__zone-handle--tr"
-          onMouseDown={(e) => handleResizeStart(e, 'tr')}
-          onTouchStart={(e) => handleResizeStart(e, 'tr')}
-          title="Resize"
-        />
-        <div
-          className="vacuum-map__zone-handle vacuum-map__zone-handle--bl"
-          onMouseDown={(e) => handleResizeStart(e, 'bl')}
-          onTouchStart={(e) => handleResizeStart(e, 'bl')}
-          title="Resize"
-        />
-        <div
-          className="vacuum-map__zone-handle vacuum-map__zone-handle--br"
-          onMouseDown={(e) => handleResizeStart(e, 'br')}
-          onTouchStart={(e) => handleResizeStart(e, 'br')}
-          title="Resize"
-        />
-        <button
-          className="vacuum-map__zone-clear"
-          onClick={handleClearZone}
-          title={clearZoneLabel}
-        >
-          ×
-        </button>
+        {!isStarted && 
+            <>
+                <div
+                className="vacuum-map__zone-handle vacuum-map__zone-handle--tl"
+                onMouseDown={(e) => handleResizeStart(e, 'tl')}
+                onTouchStart={(e) => handleResizeStart(e, 'tl')}
+                title="Resize"
+                />
+                <div
+                className="vacuum-map__zone-handle vacuum-map__zone-handle--tr"
+                onMouseDown={(e) => handleResizeStart(e, 'tr')}
+                onTouchStart={(e) => handleResizeStart(e, 'tr')}
+                title="Resize"
+                />
+                <div
+                className="vacuum-map__zone-handle vacuum-map__zone-handle--bl"
+                onMouseDown={(e) => handleResizeStart(e, 'bl')}
+                onTouchStart={(e) => handleResizeStart(e, 'bl')}
+                title="Resize"
+                />
+                <div
+                className="vacuum-map__zone-handle vacuum-map__zone-handle--br"
+                onMouseDown={(e) => handleResizeStart(e, 'br')}
+                onTouchStart={(e) => handleResizeStart(e, 'br')}
+                title="Resize"
+                />
+                <button
+                className="vacuum-map__zone-clear"
+                onClick={handleClearZone}
+                title={clearZoneLabel}
+                >
+                ×
+                </button>
+            </>
+        }
       </div>
     ),
   };

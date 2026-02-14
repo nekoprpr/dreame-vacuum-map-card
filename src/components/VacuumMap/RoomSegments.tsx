@@ -9,6 +9,7 @@ interface RoomSegmentsProps {
   calibrationPoints: { vacuum: { x: number; y: number }; map: { x: number; y: number } }[];
   imageWidth: number;
   imageHeight: number;
+  isStarted?: boolean;
 }
 
 export function RoomSegments({
@@ -18,6 +19,7 @@ export function RoomSegments({
   calibrationPoints,
   imageWidth,
   imageHeight,
+  isStarted,
 }: RoomSegmentsProps) {
   const roomPaths = useMemo(() => {
     return rooms
@@ -68,7 +70,7 @@ export function RoomSegments({
               isSelected ? 'vacuum-map__room-segment--selected' : ''
             }`}
             fill={isSelected ? 'var(--accent-bg, rgba(212, 175, 55, 0.3))' : 'transparent'}
-            stroke={isSelected ? 'var(--accent-color, #D4AF37)' : 'rgba(255, 255, 255, 0.2)'}
+            stroke={!isStarted && isSelected ? 'var(--accent-color, #D4AF37)' : 'rgba(255, 255, 255, 0.2)'}
             strokeWidth="2"
             style={{
               cursor: 'pointer',

@@ -122,6 +122,7 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
           onZoneChange={setSelectedZone}
           onImageDimensionsChange={(width, height) => setImageDimensions({ width, height })}
           language={language}
+          isStarted={typeof entity.attributes.started === 'boolean' ? entity.attributes.started : false}
         />
 
         <CleaningModeButton 

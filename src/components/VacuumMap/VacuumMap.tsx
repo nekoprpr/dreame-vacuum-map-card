@@ -18,6 +18,7 @@ interface VacuumMapProps {
   onZoneChange: (zone: Zone | null) => void;
   onImageDimensionsChange?: (width: number, height: number) => void;
   language?: SupportedLanguage;
+  isStarted?: boolean;
 }
 
 export function VacuumMap({
@@ -30,6 +31,7 @@ export function VacuumMap({
   onZoneChange,
   onImageDimensionsChange,
   language = 'en',
+  isStarted = false,
 }: VacuumMapProps) {
   const { t } = useTranslation(language);
   const mapEntity = hass.states[mapEntityId];
@@ -45,6 +47,7 @@ export function VacuumMap({
     zone,
     onZoneChange,
     clearZoneLabel: t('vacuum_map.clear_zone'),
+    isStarted,
   });
 
   const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -129,6 +132,7 @@ export function VacuumMap({
               calibrationPoints={calibrationPoints}
               imageWidth={imageDimensions.width}
               imageHeight={imageDimensions.height}
+              isStarted={isStarted}
             />
           )}
         </>
