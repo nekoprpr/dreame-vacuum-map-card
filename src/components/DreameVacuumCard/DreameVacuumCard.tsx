@@ -20,12 +20,6 @@ interface DreameVacuumCardProps {
 
 export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
   const entity = hass.states[config.entity];
-  const prevEntityRef = useRef(entity);
-  if (JSON.stringify(prevEntityRef.current) !== JSON.stringify(entity)) {
-    console.debug(hass.states)
-    console.debug('DreameVacuumCard: Rendering with entity', entity);
-    prevEntityRef.current = entity;
-  }
   const themeType = config.theme || 'light';
   const language = config.language || 'en';
   const { t } = useTranslation(language);

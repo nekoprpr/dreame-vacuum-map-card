@@ -120,7 +120,6 @@ function convertUsingCalibration(
   imageWidth: number,
   imageHeight: number
 ): VacuumZone {
-  // If no calibration points, use default transformation
   if (!calibrationPoints || calibrationPoints.length < 3) {
     const MAP_SIZE = 12000;
     const MAP_OFFSET = 6000;
@@ -133,29 +132,22 @@ function convertUsingCalibration(
     };
   }
 
-  // Convert UI percentages to image pixel coordinates
   const px1 = (uiZone.x1 / 100) * imageWidth;
   const py1 = (uiZone.y1 / 100) * imageHeight;
   const px2 = (uiZone.x2 / 100) * imageWidth;
   const py2 = (uiZone.y2 / 100) * imageHeight;
 
-  // Use the first two calibration points to determine the scale
-  const p0 = calibrationPoints[0];
-  const p1 = calibrationPoints[1];
+  const p1 = calibrationPoints[0];
+  const p2 = calibrationPoints[1];
+  const p3 = calibrationPoints[2];
 
-  const mapDeltaX = p1.map.x - p0.map.x;
-  const mapDeltaY = p1.map.y - p0.map.y;
-  const vacuumDeltaX = p1.vacuum.x - p0.vacuum.x;
-  const vacuumDeltaY = p1.vacuum.y - p0.vacuum.y;
+  const scaleX = (p2.vacuum.x - p1.vacuum.x) / (p2.map.x - p1.map.x || 1);
+  const scaleY = (p3.vacuum.y - p1.vacuum.y) / (p3.map.y - p1.map.y || 1);
 
-  const scaleX = mapDeltaX !== 0 ? vacuumDeltaX / mapDeltaX : 1;
-  const scaleY = mapDeltaY !== 0 ? vacuumDeltaY / mapDeltaY : 1;
-
-  // Convert pixel coordinates to vacuum coordinates
-  const vx1 = Math.round(p0.vacuum.x + (px1 - p0.map.x) * scaleX);
-  const vy1 = Math.round(p0.vacuum.y + (py1 - p0.map.y) * scaleY);
-  const vx2 = Math.round(p0.vacuum.x + (px2 - p0.map.x) * scaleX);
-  const vy2 = Math.round(p0.vacuum.y + (py2 - p0.map.y) * scaleY);
+  const vx1 = Math.round(p1.vacuum.x + (px1 - p1.map.x) * scaleX);
+  const vy1 = Math.round(p1.vacuum.y + (py1 - p1.map.y) * scaleY);
+  const vx2 = Math.round(p1.vacuum.x + (px2 - p1.map.x) * scaleX);
+  const vy2 = Math.round(p1.vacuum.y + (py2 - p1.map.y) * scaleY);
 
   return {
     x1: vx1,
