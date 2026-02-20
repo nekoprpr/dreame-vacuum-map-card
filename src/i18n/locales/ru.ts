@@ -164,5 +164,10 @@ export const ru: Translation = {
       dnd: 'Не беспокоить',
       dnd_desc: 'Тихие часы с ограниченной активностью',
     },
+    volume: {
+      title: 'Громкость и звук',
+      test_sound: 'Найти',
+      muted: 'Без звука',
+    },
   },
 };

@@ -4,7 +4,8 @@ import { ConsumablesSection } from './sections/ConsumablesSection';
 import { DeviceInfoSection } from './sections/DeviceInfoSection';
 import { MapManagementSection } from './sections/MapManagementSection';
 import { QuickSettingsSection } from './sections/QuickSettingsSection';
-import { Gauge, Info, Map, Settings2 } from 'lucide-react';
+import { VolumeSection } from './sections/VolumeSection';
+import { Gauge, Info, Map, Settings2, Volume2 } from 'lucide-react';
 import type { Hass, HassEntity, HassConfig } from '../../types/homeassistant';
 import './SettingsPanel.scss';
 
@@ -36,6 +37,10 @@ export function SettingsPanel({ opened, onClose, hass, entity, config }: Setting
 
             <Accordion title={t('settings.map_management.title')} icon={<Map />}>
               <MapManagementSection hass={hass} entity={entity} config={config} />
+            </Accordion>
+
+            <Accordion title={t('settings.volume.title')} icon={<Volume2 />}>
+              <VolumeSection hass={hass} entity={entity} />
             </Accordion>
 
             <Accordion title={t('settings.quick_settings.title')} icon={<Settings2 />}>

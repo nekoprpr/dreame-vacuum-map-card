@@ -161,6 +161,11 @@ export const en = {
       dnd: 'Do Not Disturb',
       dnd_desc: 'Quiet hours with reduced activity',
     },
+    volume: {
+      title: 'Volume & Sound',
+      test_sound: 'Locate',
+      muted: 'Muted',
+    },
   },
 };
 

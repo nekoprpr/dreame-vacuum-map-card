@@ -165,5 +165,10 @@ export const de: Translation = {
       dnd: 'Nicht stören',
       dnd_desc: 'Ruhezeiten mit reduzierter Aktivität',
     },
+    volume: {
+      title: 'Lautstärke & Ton',
+      test_sound: 'Finden',
+      muted: 'Stumm',
+    },
   },
 };
