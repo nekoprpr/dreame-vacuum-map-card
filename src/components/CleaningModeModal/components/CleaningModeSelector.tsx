@@ -2,11 +2,14 @@ import { CircularButton } from '../../common';
 import type { CleaningMode } from '../../../types/vacuum';
 import { getCleaningModeIcon, convertCleaningModeToService, getCleaningModeFriendlyName } from '../../../utils';
 
+type TranslateFunction = (key: string, params?: Record<string, string | number>) => string;
+
 interface CleaningModeSelectorProps {
   cleaningMode: string;
   cleaningModeList: string[];
   onSelect: (entityId: string, value: string) => void;
   entityId: string;
+  t?: TranslateFunction;
 }
 
 export function CleaningModeSelector({
@@ -14,6 +17,7 @@ export function CleaningModeSelector({
   cleaningModeList,
   onSelect,
   entityId,
+  t,
 }: CleaningModeSelectorProps) {
   return (
     <div className="cleaning-mode-modal__power-grid">
@@ -26,7 +30,7 @@ export function CleaningModeSelector({
             icon={getCleaningModeIcon(mode as CleaningMode)}
           />
           <span className="cleaning-mode-modal__mode-option-label">
-            {getCleaningModeFriendlyName(mode as CleaningMode)}
+            {getCleaningModeFriendlyName(mode as CleaningMode, t)}
           </span>
         </div>
       ))}

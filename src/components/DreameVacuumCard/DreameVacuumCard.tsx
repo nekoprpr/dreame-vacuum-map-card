@@ -103,7 +103,12 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
   return (
     <div ref={containerRef} className={`dreame-vacuum-card dreame-vacuum-card--${theme.name}`}>
       <div className="dreame-vacuum-card__container">
-        <Header entity={entity} deviceName={deviceName} onSettingsClick={() => setSettingsPanelOpened(true)} />
+        <Header
+          entity={entity}
+          deviceName={deviceName}
+          onSettingsClick={() => setSettingsPanelOpened(true)}
+          language={language}
+        />
 
         <VacuumMap
           hass={hass}
@@ -178,6 +183,7 @@ export function DreameVacuumCard({ hass, config }: DreameVacuumCardProps) {
         hass={hass}
         entity={entity}
         config={config}
+        language={language}
       />
 
       {toast && <Toast message={toast} onClose={hideToast} />}

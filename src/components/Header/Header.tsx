@@ -1,5 +1,7 @@
 import { Settings } from 'lucide-react';
 import type { HassEntity } from '../../types/homeassistant';
+import type { SupportedLanguage } from '../../i18n/locales';
+import { useTranslation } from '../../hooks';
 import { getAttr, isNumber } from '../../utils';
 import './Header.scss';
 import {
@@ -15,9 +17,11 @@ interface HeaderProps {
   entity: HassEntity;
   deviceName: string;
   onSettingsClick?: () => void;
+  language?: SupportedLanguage;
 }
 
-export function Header({ entity, deviceName, onSettingsClick }: HeaderProps) {
+export function Header({ entity, deviceName, onSettingsClick, language }: HeaderProps) {
+  const { t } = useTranslation(language);
   const statusText = getAttr(entity.attributes.status, entity.state);
   const cleanedArea = getAttr(entity.attributes.cleaned_area, 0);
   const cleaningTime = getAttr(entity.attributes.cleaning_time, 0);
@@ -62,15 +66,21 @@ export function Header({ entity, deviceName, onSettingsClick }: HeaderProps) {
       <div className="header__stats">
         <div className="header__stat">
           <span className="header__stat-icon--area">{AREA_ICON_SVG}</span>
-          <span className="header__stat-value">{cleanedArea} m²</span>
+          <span className="header__stat-value">
+            {cleanedArea} {t('units.square_meters')}
+          </span>
         </div>
         <div className="header__stat">
           <span className="header__stat-icon--cleaning-time">{HISTORY_ICON_SVG}</span>
-          <span className="header__stat-value">{cleaningTime} min</span>
+          <span className="header__stat-value">
+            {cleaningTime} {t('units.minutes')}
+          </span>
         </div>
         <div className="header__stat">
           <span className="header__stat-icon">{getBatteryLevelIcon()}</span>
-          <span className="header__stat-value">{batteryLevel} %</span>
+          <span className="header__stat-value">
+            {batteryLevel} {t('units.percent')}
+          </span>
         </div>
       </div>
     </div>
