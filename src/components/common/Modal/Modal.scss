@@ -9,7 +9,7 @@
   padding: 0 1.25rem 1.25rem;
   z-index: 1000;
   max-height: 80vh;
-  overflow-y: hiddedn;
+  overflow-y: hidden;
   color: var(--text-primary, black);
 
   &::-webkit-scrollbar {
@@ -33,5 +33,9 @@
     background: var(--handle-bg, rgba(0, 0, 0, 0.15));
     border-radius: 0.1875rem;
     margin: 0.75rem auto 1.25rem;
+  }
+
+  &__content {
+    height: 90%;
   }
 }
