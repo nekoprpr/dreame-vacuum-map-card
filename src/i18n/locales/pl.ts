@@ -115,6 +115,32 @@ export const pl = {
   header: {
     battery: 'Bateria',
     status: 'Status',
+    area: 'Powierzchnia',
+    time: 'Czas',
+  },
+
+  // Units
+  units: {
+    square_meters: 'm²',
+    minutes: 'min',
+    minutes_short: 'm',
+    percent: '%',
+    decibels: 'dBm',
+  },
+
+  // Suction Levels (friendly names)
+  suction_levels: {
+    quiet: 'Cichy',
+    standard: 'Standardowy',
+    strong: 'Turbo',
+    turbo: 'Max',
+  },
+
+  // Mop Washing Frequency
+  mop_washing_frequency: {
+    by_room: 'Według pokoju',
+    by_area: 'Według powierzchni',
+    by_time: 'Według czasu',
   },
 
   // Errors

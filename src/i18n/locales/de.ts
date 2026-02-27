@@ -119,6 +119,32 @@ export const de: Translation = {
   header: {
     battery: 'Batterie',
     status: 'Status',
+    area: 'Fläche',
+    time: 'Zeit',
+  },
+
+  // Units
+  units: {
+    square_meters: 'm²',
+    minutes: 'min',
+    minutes_short: 'm',
+    percent: '%',
+    decibels: 'dBm',
+  },
+
+  // Suction Levels (friendly names)
+  suction_levels: {
+    quiet: 'Leise',
+    standard: 'Standard',
+    strong: 'Turbo',
+    turbo: 'Max',
+  },
+
+  // Mop Washing Frequency
+  mop_washing_frequency: {
+    by_room: 'Nach Raum',
+    by_area: 'Nach Fläche',
+    by_time: 'Nach Zeit',
   },
 
   // Errors

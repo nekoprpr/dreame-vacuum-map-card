@@ -118,6 +118,32 @@ export const ru: Translation = {
   header: {
     battery: 'Батарея',
     status: 'Статус',
+    area: 'Площадь',
+    time: 'Время',
+  },
+
+  // Units
+  units: {
+    square_meters: 'м²',
+    minutes: 'мин',
+    minutes_short: 'м',
+    percent: '%',
+    decibels: 'дБм',
+  },
+
+  // Suction Levels (friendly names)
+  suction_levels: {
+    quiet: 'Тихий',
+    standard: 'Стандартный',
+    strong: 'Турбо',
+    turbo: 'Макс',
+  },
+
+  // Mop Washing Frequency
+  mop_washing_frequency: {
+    by_room: 'По комнате',
+    by_area: 'По площади',
+    by_time: 'По времени',
   },
 
   // Errors

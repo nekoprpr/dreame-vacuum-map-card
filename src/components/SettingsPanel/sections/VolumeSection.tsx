@@ -3,18 +3,20 @@ import { Volume2, VolumeX, MapPin } from 'lucide-react';
 import { useTranslation } from '../../../hooks';
 import { getAttr } from '../../../utils';
 import type { Hass, HassEntity } from '../../../types/homeassistant';
+import type { SupportedLanguage } from '../../../i18n/locales';
 import './VolumeSection.scss';
 
 interface VolumeSectionProps {
   hass: Hass;
   entity: HassEntity;
+  language?: SupportedLanguage;
 }
 
 const VOLUME_MIN = 0;
 const VOLUME_MAX = 100;
 
-export function VolumeSection({ hass, entity }: VolumeSectionProps) {
-  const { t } = useTranslation();
+export function VolumeSection({ hass, entity, language }: VolumeSectionProps) {
+  const { t } = useTranslation(language);
   const entityName = entity.entity_id.split('.')[1] ?? '';
   const currentVolume = getAttr(entity.attributes.volume, 50);
 
