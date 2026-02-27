@@ -1,10 +1,12 @@
 .cleaning-mode-modal {
+  height: 100%;
+
   &__header {
     margin-bottom: 1.5rem;
   }
 
   &__content-wrapper {
-    max-height: 38rem;
+    height: calc(100% - 4rem);
     overflow-y: auto;
     width: 100%;
     overflow-x: hidden;
@@ -130,11 +132,10 @@
 
   &__horizontal-scroll {
     display: flex;
-    gap: 4rem;
+    justify-content: space-around;
     overflow-x: auto;
     padding-bottom: 0.5rem;
     padding-top: 0.5rem;
-    padding-left: 1.5rem;
 
     &::-webkit-scrollbar {
       height: 0.25rem;
@@ -366,9 +367,8 @@
   }
 
   &__route-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
+    display: flex;
+    justify-content: space-around;
   }
 
   &__route-option {

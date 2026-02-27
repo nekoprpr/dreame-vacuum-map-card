@@ -25,6 +25,7 @@ interface CalibrationPoint {
 export function parseRoomsFromCamera(hass: Hass, cameraEntityId: string): Room[] {
   const cameraEntity = hass.states[cameraEntityId];
   if (!cameraEntity?.attributes?.rooms) {
+    console.debug('[RoomParser] No rooms found in camera entity:', cameraEntityId);
     return [];
   }
 

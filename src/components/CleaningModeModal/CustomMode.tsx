@@ -69,6 +69,7 @@ export function CustomMode({
           cleaningModeList={cleaningModeList}
           onSelect={setSelectOption}
           entityId={entityIds.cleaningMode}
+          t={t}
         />
       </section>
 
@@ -83,6 +84,7 @@ export function CustomMode({
           suctionLevelEntityId={entityIds.suctionLevel}
           maxSuctionPowerEntityId={entityIds.maxSuctionPower}
           maxPlusDescription={t('custom_mode.max_plus_description')}
+          t={t}
         />
       </section>
 
@@ -118,6 +120,7 @@ export function CustomMode({
           frequencyEntityId={entityIds.selfCleanFrequency}
           areaEntityId={entityIds.selfCleanArea}
           timeEntityId={entityIds.selfCleanTime}
+          t={t}
         />
       </section>
 

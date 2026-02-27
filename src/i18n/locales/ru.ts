@@ -15,6 +15,10 @@ export const ru: Translation = {
     zone_overlay_create: 'Кликните на карту для добавления зоны уборки',
     zone_overlay_resize: 'Потяните за углы для изменения размеры, кликните на любом месте для новой зоны',
     clear_zone: 'Уборка зоны',
+    switch_to_list: 'Переключить на список',
+    switch_to_map: 'Переключить на карту',
+    room_list_overlay: 'Нажмите на комнаты для выбора уборки',
+    no_rooms: 'Нет доступных комнат',
   },
 
   // Mode Tabs
@@ -114,6 +118,32 @@ export const ru: Translation = {
   header: {
     battery: 'Батарея',
     status: 'Статус',
+    area: 'Площадь',
+    time: 'Время',
+  },
+
+  // Units
+  units: {
+    square_meters: 'м²',
+    minutes: 'мин',
+    minutes_short: 'м',
+    percent: '%',
+    decibels: 'дБм',
+  },
+
+  // Suction Levels (friendly names)
+  suction_levels: {
+    quiet: 'Тихий',
+    standard: 'Стандартный',
+    strong: 'Турбо',
+    turbo: 'Макс',
+  },
+
+  // Mop Washing Frequency
+  mop_washing_frequency: {
+    by_room: 'По комнате',
+    by_area: 'По площади',
+    by_time: 'По времени',
   },
 
   // Errors

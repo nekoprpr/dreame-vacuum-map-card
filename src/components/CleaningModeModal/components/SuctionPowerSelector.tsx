@@ -2,6 +2,8 @@ import { CircularButton, Toggle } from '../../common';
 import type { SuctionLevel } from '../../../types/vacuum';
 import { getSuctionLevelIcon, convertToLowerCase, getSuctionLevelFriendlyName } from '../../../utils';
 
+type TranslateFunction = (key: string, params?: Record<string, string | number>) => string;
+
 interface SuctionPowerSelectorProps {
   suctionLevel: string;
   suctionLevelList: string[];
@@ -11,6 +13,7 @@ interface SuctionPowerSelectorProps {
   suctionLevelEntityId: string;
   maxSuctionPowerEntityId: string;
   maxPlusDescription: string;
+  t?: TranslateFunction;
 }
 
 export function SuctionPowerSelector({
@@ -22,6 +25,7 @@ export function SuctionPowerSelector({
   suctionLevelEntityId,
   maxSuctionPowerEntityId,
   maxPlusDescription,
+  t,
 }: SuctionPowerSelectorProps) {
   return (
     <>
@@ -35,7 +39,7 @@ export function SuctionPowerSelector({
               icon={getSuctionLevelIcon(level as SuctionLevel)}
             />
             <span className="cleaning-mode-modal__power-label">
-              {getSuctionLevelFriendlyName(level as SuctionLevel)}
+              {getSuctionLevelFriendlyName(level as SuctionLevel, t)}
             </span>
           </div>
         ))}
