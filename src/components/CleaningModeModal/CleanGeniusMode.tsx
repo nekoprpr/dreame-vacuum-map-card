@@ -73,7 +73,7 @@ export function CleanGeniusMode({
                 >
                   {getCleanGeniusModeIcon(typedMode)}
                 </div>
-                <span className="cleaning-mode-modal__mode-label">{getCleanGeniusModeFriendlyName(typedMode)}</span>
+                <span className="cleaning-mode-modal__mode-label">{getCleanGeniusModeFriendlyName(typedMode, t)}</span>
                 {mode === cleangeniusMode && (
                   <div className="cleaning-mode-modal__mode-checkmark">
                     <span>✓</span>

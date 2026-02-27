@@ -54,8 +54,9 @@ export interface HassConfig {
   type: string;
   theme?: 'light' | 'dark' | 'custom';
   custom_theme?: CustomThemeConfig;
-  language?: 'en' | 'de' | 'ru' | 'zh';
+  language?: 'en' | 'de' | 'ru' | 'pl' | 'it' | 'nl' | 'es' | 'zh';
   default_mode?: CleaningMode;
+  default_room_view?: RoomViewMode;
 }
 
 export interface Hass {
@@ -66,6 +67,7 @@ export interface Hass {
 
 export type CleaningMode = 'room' | 'all' | 'zone';
 export type CleaningStrategy = 'CleanGenius' | 'Custom';
+export type RoomViewMode = 'map' | 'list';
 
 export interface RoomPosition {
   id: number;

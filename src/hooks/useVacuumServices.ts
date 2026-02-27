@@ -19,28 +19,33 @@ export function useVacuumServices({ hass, entityId, mapEntityId, onSuccess, lang
   const { t } = useTranslation(language);
 
   const handleStart = useCallback(() => {
+    console.debug('[Vacuum] Start full clean', entityId);
     hass.callService('vacuum', 'start', { entity_id: entityId });
     onSuccess?.(t('toast.starting_full_clean'));
   }, [hass, entityId, onSuccess, t]);
 
   const handlePause = useCallback(() => {
+    console.debug('[Vacuum] Pause', entityId);
     hass.callService('vacuum', 'pause', { entity_id: entityId });
     onSuccess?.(t('toast.pausing_vacuum'));
   }, [hass, entityId, onSuccess, t]);
 
   const handleStop = useCallback(() => {
+    console.debug('[Vacuum] Stop and return to base', entityId);
     hass.callService('vacuum', 'stop', { entity_id: entityId });
     hass.callService('vacuum', 'return_to_base', { entity_id: entityId });
     onSuccess?.(t('toast.stopping_vacuum'));
   }, [hass, entityId, onSuccess, t]);
 
   const handleDock = useCallback(() => {
+    console.debug('[Vacuum] Return to dock', entityId);
     hass.callService('vacuum', 'return_to_base', { entity_id: entityId });
     onSuccess?.(t('toast.vacuum_docking'));
   }, [hass, entityId, onSuccess, t]);
 
   const handleCleanSegments = useCallback(
     (segments: number[], count: number) => {
+      console.debug('[Vacuum] Clean segments', { entityId, segments, count });
       hass.callService('dreame_vacuum', 'vacuum_clean_segment', {
         entity_id: entityId,
         segments,
@@ -55,17 +60,18 @@ export function useVacuumServices({ hass, entityId, mapEntityId, onSuccess, lang
     (zone: Zone, imageWidth: number, imageHeight: number) => {
       const mapEntity = hass.states[mapEntityId];
 
-      console.log('Zone conversion debug:', {
+      console.debug('[Vacuum] Clean zone - input:', {
         uiZone: zone,
         imageWidth,
         imageHeight,
-        mapEntity: mapEntity?.attributes,
+        mapEntityId,
+        calibrationPoints: mapEntity?.attributes?.calibration_points,
       });
 
       // Convert UI zone (percentage) to vacuum coordinates
       const vacuumZone = convertUIZoneToVacuumZone(zone, mapEntity, imageWidth, imageHeight);
 
-      console.log('Converted vacuum zone:', vacuumZone);
+      console.debug('[Vacuum] Clean zone - converted:', vacuumZone);
 
       hass.callService('dreame_vacuum', 'vacuum_clean_zone', {
         entity_id: entityId,
@@ -84,6 +90,14 @@ export function useVacuumServices({ hass, entityId, mapEntityId, onSuccess, lang
       imageWidth?: number,
       imageHeight?: number
     ) => {
+      console.debug('[Vacuum] Handle clean', {
+        mode,
+        selectedRooms: Array.from(selectedRooms.entries()),
+        selectedZone,
+        imageWidth,
+        imageHeight,
+      });
+
       switch (mode) {
         case 'all':
           handleStart();
@@ -92,6 +106,7 @@ export function useVacuumServices({ hass, entityId, mapEntityId, onSuccess, lang
           if (selectedRooms.size > 0) {
             handleCleanSegments(Array.from(selectedRooms.keys()), selectedRooms.size);
           } else {
+            console.debug('[Vacuum] No rooms selected');
             onSuccess?.(t('toast.select_rooms_first'));
           }
           break;
@@ -99,8 +114,10 @@ export function useVacuumServices({ hass, entityId, mapEntityId, onSuccess, lang
           if (selectedZone && imageWidth && imageHeight) {
             handleCleanZone(selectedZone, imageWidth, imageHeight);
           } else if (selectedZone) {
+            console.debug('[Vacuum] Zone selected but no image dimensions');
             onSuccess?.(t('toast.cannot_determine_map'));
           } else {
+            console.debug('[Vacuum] No zone selected');
             onSuccess?.(t('toast.select_zone_first'));
           }
           break;

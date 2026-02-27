@@ -3,6 +3,8 @@ import { CircularButton } from '../../common';
 import type { SelfCleanFrequency } from '../../../types/vacuum';
 import { getSelfCleanFrequencyIcon, convertSelfCleanFrequencyToService } from '../../../utils';
 
+type TranslateFunction = (key: string, params?: Record<string, string | number>) => string;
+
 interface MopWashingFrequencyProps {
   selfCleanFrequency: string;
   selfCleanFrequencyList: string[];
@@ -18,6 +20,24 @@ interface MopWashingFrequencyProps {
   frequencyEntityId: string;
   areaEntityId: string;
   timeEntityId: string;
+  t?: TranslateFunction;
+}
+
+/**
+ * Get translated frequency label
+ */
+function getFrequencyLabel(freq: string, t?: TranslateFunction): string {
+  if (!t) return freq;
+  switch (freq) {
+    case 'By room':
+      return t('mop_washing_frequency.by_room');
+    case 'By area':
+      return t('mop_washing_frequency.by_area');
+    case 'By time':
+      return t('mop_washing_frequency.by_time');
+    default:
+      return freq;
+  }
 }
 
 export function MopWashingFrequency({
@@ -35,6 +55,7 @@ export function MopWashingFrequency({
   frequencyEntityId,
   areaEntityId,
   timeEntityId,
+  t,
 }: MopWashingFrequencyProps) {
   const [localArea, setLocalArea] = useState(selfCleanArea);
   const [localTime, setLocalTime] = useState(selfCleanTime);
@@ -46,6 +67,10 @@ export function MopWashingFrequency({
   const thumbWidth = 20; // in pixels
   const areaTooltipLeft = `calc(${selfCleanAreaPercent}% + ${thumbWidth / 2 - (selfCleanAreaPercent * thumbWidth) / 100}px)`;
   const timeTooltipLeft = `calc(${selfCleanTimePercent}% + ${thumbWidth / 2 - (selfCleanTimePercent * thumbWidth) / 100}px)`;
+
+  // Get translated unit strings
+  const squareMetersUnit = t ? t('units.square_meters') : 'm²';
+  const minutesShortUnit = t ? t('units.minutes_short') : 'm';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -78,7 +103,7 @@ export function MopWashingFrequency({
               }
               icon={getSelfCleanFrequencyIcon(freq as SelfCleanFrequency)}
             />
-            <span className="cleaning-mode-modal__mode-option-label">{freq}</span>
+            <span className="cleaning-mode-modal__mode-option-label">{getFrequencyLabel(freq, t)}</span>
           </div>
         ))}
       </div>
@@ -109,7 +134,7 @@ export function MopWashingFrequency({
                 left: selfCleanFrequency === 'By area' ? areaTooltipLeft : timeTooltipLeft,
               }}
             >
-              {selfCleanFrequency === 'By area' ? `${localArea}m²` : `${localTime}m`}
+              {selfCleanFrequency === 'By area' ? `${localArea}${squareMetersUnit}` : `${localTime}${minutesShortUnit}`}
             </div>
           </div>
         </div>

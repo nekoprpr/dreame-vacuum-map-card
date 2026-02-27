@@ -2,11 +2,13 @@ import { useCallback } from 'react';
 import { useTranslation } from '../../../hooks';
 import { getAttr } from '../../../utils';
 import type { Hass, HassEntity } from '../../../types/homeassistant';
+import type { SupportedLanguage } from '../../../i18n/locales';
 import './ConsumablesSection.scss';
 
 interface ConsumablesSectionProps {
   hass: Hass;
   entity: HassEntity;
+  language?: SupportedLanguage;
 }
 
 interface ConsumableItem {
@@ -48,8 +50,8 @@ const CONSUMABLES: ConsumableItem[] = [
   },
 ];
 
-export function ConsumablesSection({ hass, entity }: ConsumablesSectionProps) {
-  const { t } = useTranslation();
+export function ConsumablesSection({ hass, entity, language }: ConsumablesSectionProps) {
+  const { t } = useTranslation(language);
   const attributes = entity.attributes;
 
   const handleReset = useCallback(

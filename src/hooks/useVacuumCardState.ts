@@ -19,6 +19,7 @@ export function useVacuumCardState({ defaultMode = DEFAULTS.MODE }: UseVacuumCar
   const [settingsPanelOpened, setSettingsPanelOpened] = useState(false);
 
   const handleModeChange = useCallback((mode: CleaningMode) => {
+    console.debug('[UI] Mode changed:', mode);
     setSelectedMode(mode);
     setSelectedRooms(new Map());
     setSelectedZone(null);
@@ -29,8 +30,10 @@ export function useVacuumCardState({ defaultMode = DEFAULTS.MODE }: UseVacuumCar
       setSelectedRooms((prevSelected) => {
         const newSelected = new Map(prevSelected);
         if (newSelected.has(roomId)) {
+          console.debug('[UI] Room deselected:', { roomId, roomName });
           newSelected.delete(roomId);
         } else {
+          console.debug('[UI] Room selected:', { roomId, roomName });
           newSelected.set(roomId, roomName);
         }
         return newSelected;
@@ -39,6 +42,26 @@ export function useVacuumCardState({ defaultMode = DEFAULTS.MODE }: UseVacuumCar
     },
     [selectedRooms]
   );
+
+  const handleModalOpen = useCallback((opened: boolean) => {
+    console.debug('[UI] Cleaning mode modal:', opened ? 'opened' : 'closed');
+    setModalOpened(opened);
+  }, []);
+
+  const handleShortcutsModalOpen = useCallback((opened: boolean) => {
+    console.debug('[UI] Shortcuts modal:', opened ? 'opened' : 'closed');
+    setShortcutsModalOpened(opened);
+  }, []);
+
+  const handleSettingsPanelOpen = useCallback((opened: boolean) => {
+    console.debug('[UI] Settings panel:', opened ? 'opened' : 'closed');
+    setSettingsPanelOpened(opened);
+  }, []);
+
+  const handleZoneChange = useCallback((zone: Zone | null) => {
+    console.debug('[UI] Zone changed:', zone);
+    setSelectedZone(zone);
+  }, []);
 
   return {
     selectedMode,
@@ -49,10 +72,10 @@ export function useVacuumCardState({ defaultMode = DEFAULTS.MODE }: UseVacuumCar
     settingsPanelOpened,
     setSelectedMode,
     setSelectedRooms,
-    setSelectedZone,
-    setModalOpened,
-    setShortcutsModalOpened,
-    setSettingsPanelOpened,
+    setSelectedZone: handleZoneChange,
+    setModalOpened: handleModalOpen,
+    setShortcutsModalOpened: handleShortcutsModalOpen,
+    setSettingsPanelOpened: handleSettingsPanelOpen,
     handleModeChange,
     handleRoomToggle,
   };
