@@ -15,6 +15,10 @@ export const zh: Translation = {
     zone_overlay_create: '点击地图添加划区清洁区域',
     zone_overlay_resize: '拖动边角调整大小，点击其他空白处重新放置',
     clear_zone: '清除选区',
+    switch_to_list: '切换到列表视图',
+    switch_to_map: '切换到地图视图',
+    room_list_overlay: '点击房间进行选择',
+    no_rooms: '暂无可用房间',
   },
 
   // Mode Tabs (模式切换标签)
@@ -113,6 +117,32 @@ export const zh: Translation = {
   header: {
     battery: '电量',
     status: '状态',
+    area: '面积',
+    time: '时间',
+  },
+
+  // Units (单位)
+  units: {
+    square_meters: '㎡',
+    minutes: '分钟',
+    minutes_short: '分',
+    percent: '%',
+    decibels: 'dBm',
+  },
+
+  // Suction Levels (吸力档位)
+  suction_levels: {
+    quiet: '安静',
+    standard: '标准',
+    strong: '强劲',
+    turbo: '超强',
+  },
+
+  // Mop Washing Frequency (拖布回洗频率)
+  mop_washing_frequency: {
+    by_room: '按房间',
+    by_area: '按面积',
+    by_time: '按时间',
   },
 
   // Errors (错误提示)
